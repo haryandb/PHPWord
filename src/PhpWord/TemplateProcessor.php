@@ -1449,4 +1449,14 @@ class TemplateProcessor
         self::$macroOpeningChars = $macroOpeningChars;
         self::$macroClosingChars = $macroClosingChars;
     }
+    
+    public function gettempDocumentMainPart()
+    {
+        return $this->tempDocumentMainPart;
+    }
+
+    public function settempDocumentMainPart($new)
+    {
+        return $this->tempDocumentMainPart = $new;
+    }
 }
