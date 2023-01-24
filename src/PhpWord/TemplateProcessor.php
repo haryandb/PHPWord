@@ -662,7 +662,7 @@ class TemplateProcessor
                     if (preg_match('/(<[^<]+>)([^<]*)(' . preg_quote($varNameWithArgsFixed) . ')([^>]*)(<[^>]+>)/Uu', $partContent, $matches)) {
                         $wholeTag = $matches[0];
                         array_shift($matches);
-                        list($openTag, $prefix, , $postfix, $closeTag) = $matches;
+                        list($openTag, $prefix,, $postfix, $closeTag) = $matches;
                         $replaceXml = $openTag . $prefix . $closeTag . $xmlImage . $openTag . $postfix . $closeTag;
                         // replace on each iteration, because in one tag we can have 2+ inline variables => before proceed next variable we need to change $partContent
                         $partContent = $this->setValueForPart($wholeTag, $replaceXml, $partContent, $limit);
@@ -748,7 +748,8 @@ class TemplateProcessor
 
                 // If tmpXmlRow doesn't contain continue, this row is no longer part of the spanned row.
                 $tmpXmlRow = $this->getSlice($extraRowStart, $extraRowEnd);
-                if (!preg_match('#<w:vMerge/>#', $tmpXmlRow) &&
+                if (
+                    !preg_match('#<w:vMerge/>#', $tmpXmlRow) &&
                     !preg_match('#<w:vMerge w:val="continue"\s*/>#', $tmpXmlRow)
                 ) {
                     break;
@@ -1316,5 +1317,15 @@ class TemplateProcessor
     protected function textNeedsSplitting($text)
     {
         return preg_match('/[^>]\${|}[^<]/i', $text) == 1;
+    }
+
+    public function gettempDocumentMainPart()
+    {
+        return $this->tempDocumentMainPart;
+    }
+
+    public function settempDocumentMainPart($new)
+    {
+        return $this->tempDocumentMainPart = $new;
     }
 }
